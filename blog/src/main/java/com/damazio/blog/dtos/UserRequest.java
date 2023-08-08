@@ -1,4 +1,4 @@
-package com.damazio.blog.repositories;
+package com.damazio.blog.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +12,6 @@ import lombok.Setter;
 public class UserRequest {
     private String username;
     private String email;
-
-    // Construtores, getters e setters (omitidos para brevidade)
+    private String password;
+    private boolean authorizedUser;
 }

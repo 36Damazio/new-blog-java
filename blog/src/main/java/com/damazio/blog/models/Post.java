@@ -1,12 +1,12 @@
 package com.damazio.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -15,8 +15,8 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "users")
-public class User implements Serializable {
+@Table(name = "posts")
+public class Post implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
@@ -24,18 +24,19 @@ public class User implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String title;
 
     @Column(nullable = false)
-    private String email;
+    private String description;
 
     @Column(nullable = false)
-    private String password;
-
+    private Instant updateAt;
     @Column(nullable = false)
-    private boolean authorizedUser;
+    private Instant createAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
-
+    @ManyToOne
+    private Category category;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 }

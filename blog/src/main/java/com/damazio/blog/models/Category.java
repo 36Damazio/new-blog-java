@@ -15,8 +15,8 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "users")
-public class User implements Serializable {
+@Table(name = "categories")
+public class Category implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
@@ -24,18 +24,8 @@ public class User implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String name;
 
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private boolean authorizedUser;
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "category")
     private List<Post> posts = new ArrayList<>();
-
 }
