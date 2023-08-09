@@ -1,3 +1,4 @@
+
 package com.damazio.blog.models;
 
 import jakarta.persistence.*;

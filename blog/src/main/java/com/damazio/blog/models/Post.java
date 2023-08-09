@@ -29,14 +29,15 @@ public class Post implements Serializable {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column
     private Instant updateAt;
-    @Column(nullable = false)
+    @Column
     private Instant createAt;
 
     @ManyToOne
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnore
     private User user;
 }

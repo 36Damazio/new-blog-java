@@ -2,6 +2,7 @@ package com.damazio.blog.services;
 
 import com.damazio.blog.dtos.PostRequest;
 import com.damazio.blog.models.Post;
+import com.damazio.blog.models.User;
 import com.damazio.blog.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,18 +14,24 @@ import java.util.Optional;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UserService userService;
 
     @Autowired
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
-    public Post createPost(PostRequest postRequest) {
+    public Post createPostWithUser(Long userId, PostRequest postRequest) {
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
         Post post = new Post();
         post.setTitle(postRequest.getTitle());
         post.setDescription(postRequest.getDescription());
         post.setCreateAt(Instant.now());
         post.setUpdateAt(Instant.now());
+        post.setUser(user);
 
         return postRepository.save(post);
     }

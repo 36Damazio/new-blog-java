@@ -1,3 +1,4 @@
+
 package com.damazio.blog.controllers;
 
 import com.damazio.blog.models.Post;
@@ -21,9 +22,11 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest) {
-        Post createdPost = postService.createPost(postRequest);
+    @PostMapping("/create-with-user/{userId}")
+    public ResponseEntity<Post> createPostWithUser(
+            @PathVariable Long userId,
+            @RequestBody PostRequest postRequest) {
+        Post createdPost = postService.createPostWithUser(userId, postRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(createdPost.getId()).toUri();
         return ResponseEntity.created(uri).body(createdPost);

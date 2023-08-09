@@ -3,19 +3,13 @@ version: '3.8'
 services:
 
   db:
-    container_name: postgress01
+    container_name: pg
     image: postgres:alpine
     restart: always
     environment:
       POSTGRES_USER: damazio
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: blog-java
+      POSTGRES_DB: blog
     ports:
       - "5432:5432"
-    networks:
-      - postgres-compose-network
 
-
-networks:
-  postgres-compose-network:
-    driver: bridge
