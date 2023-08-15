@@ -23,14 +23,16 @@ public class PostController {
     }
 
     @PostMapping("/create-with-user/{userId}")
-    public ResponseEntity<Post> createPostWithUser(
+    public ResponseEntity<Post> createPostWithUserAndCategories(
             @PathVariable Long userId,
-            @RequestBody PostRequest postRequest) {
-        Post createdPost = postService.createPostWithUser(userId, postRequest);
+            @RequestBody PostRequest postRequest)
+           {
+        Post createdPost = postService.createPostWithUserAndCategories(userId, postRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(createdPost.getId()).toUri();
         return ResponseEntity.created(uri).body(createdPost);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {

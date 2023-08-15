@@ -2,7 +2,9 @@ package com.damazio.blog.controllers;
 
 import com.damazio.blog.models.Category;
 import com.damazio.blog.dtos.CategoryRequest;
+import com.damazio.blog.models.Post;
 import com.damazio.blog.services.CategoryService;
+import com.damazio.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ import java.util.Optional;
 @RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final PostService postService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, PostService postService) {
         this.categoryService = categoryService;
+        this.postService = postService;
     }
 
     @PostMapping
@@ -31,6 +35,14 @@ public class CategoryController {
 
         return ResponseEntity.created(uri).body(createdCategory);
     }
+    @PostMapping("/{postId}/add-category/{categoryId}")
+    public ResponseEntity<Post> addCategoryToPost(
+            @PathVariable Long postId,
+            @PathVariable Long categoryId) {
+        Post updatedPost = postService.addCategoryToPost(postId, categoryId);
+        return ResponseEntity.ok(updatedPost);
+    }
+
 
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {

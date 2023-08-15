@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +14,8 @@ import java.time.Instant;
 @NoArgsConstructor
 public class PostRequest {
     private Long id;
+
+    private List <Long>  CategoryIds;
 
     private String title;
 

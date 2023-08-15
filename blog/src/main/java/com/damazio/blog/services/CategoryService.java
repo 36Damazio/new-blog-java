@@ -43,6 +43,10 @@ public class CategoryService {
             throw new RuntimeException("Category not found with ID: " + id);
         }
     }
+    public List<Category> getCategoriesByIds(List<Long> categoryIds) {
+        return categoryRepository.findAllById(categoryIds);
+    }
+
 
     public void deleteCategory(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);

@@ -1,6 +1,7 @@
 
 package com.damazio.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class Category implements Serializable {
 
     @Column(nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "category")
+@JsonIgnore
+    @ManyToMany(mappedBy = "categories")
     private List<Post> posts = new ArrayList<>();
 }
