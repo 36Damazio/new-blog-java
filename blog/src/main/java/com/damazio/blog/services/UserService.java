@@ -1,8 +1,8 @@
 package com.damazio.blog.services;
 
+import com.damazio.blog.dtos.UserRequest;
 import com.damazio.blog.models.User;
 import com.damazio.blog.repositories.UserRepository;
-import com.damazio.blog.dtos.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,10 @@ public class UserService {
     }
 
     public User createUser(UserRequest userRequest) {
+        String email = userRequest.getEmail();
+        if (userRepository.existsByEmail(email)){
+            throw new RuntimeException("Email already exists");
+        }
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
