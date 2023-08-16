@@ -1,6 +1,7 @@
 package com.damazio.blog.services;
 
 import com.damazio.blog.models.Category;
+import com.damazio.blog.models.Post;
 import com.damazio.blog.repositories.CategoryRepository;
 import com.damazio.blog.dtos.CategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,19 @@ public class CategoryService {
     }
 
 
-    public void deleteCategory(Long id) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+    public void deleteCategory(Long categoryId) {
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
         if (optionalCategory.isPresent()) {
-            categoryRepository.delete(optionalCategory.get());
+            Category category = optionalCategory.get();
+
+            // Remove as associações com posts
+            for (Post post : category.getPosts()) {
+                post.getCategories().remove(category);
+            }
+
+            categoryRepository.delete(category);
         } else {
-            throw new RuntimeException("Category not found with ID: " + id);
+            throw new RuntimeException("Category not found with ID: " + categoryId);
         }
     }
 }

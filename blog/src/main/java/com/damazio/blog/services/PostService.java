@@ -80,12 +80,28 @@ public class PostService {
         }
     }
 
-    public void deletePost(Long id) {
-        Optional<Post> optionalPost = postRepository.findById(id);
+    public void deletePost(Long postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalPost.isPresent()) {
-            postRepository.delete(optionalPost.get());
+            Post post = optionalPost.get();
+
+            // Remove as associações com categorias
+            post.getCategories().clear(); // Remove todas as categorias
+
+            postRepository.delete(post);
         } else {
-            throw new RuntimeException("Post not found with ID: " + id);
+            throw new RuntimeException("Post not found with ID: " + postId);
         }
+    }
+    public void removeCategoryFromPost(Long postId, Long categoryId) {
+        Post post = getPostById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with ID: " + postId));
+
+        Category category = categoryService.getCategoryById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + categoryId));
+
+        post.getCategories().remove(category);
+
+        postRepository.save(post);
     }
 }

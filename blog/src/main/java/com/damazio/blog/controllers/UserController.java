@@ -42,6 +42,7 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -55,6 +56,17 @@ public class UserController {
         // Retorna a resposta HTTP com o usuário atualizado
         return ResponseEntity.ok(updatedUser);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+            return ResponseEntity.noContent().location(location).build(); // Retorna um status 204 (No Content) se a exclusão for bem-sucedida
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build(); // Retorna um status 404 (Not Found) se o usuário não for encontrado
+        }
+    }
+
 
 }
 

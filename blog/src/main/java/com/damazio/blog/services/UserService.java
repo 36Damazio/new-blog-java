@@ -4,6 +4,7 @@ import com.damazio.blog.models.User;
 import com.damazio.blog.repositories.UserRepository;
 import com.damazio.blog.dtos.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,20 +13,19 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
+    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(UserRequest userRequest) {
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setAuthorizedUser(userRequest.isAuthorizedUser());
-
-        // Retorna o usuário criado
 
         return userRepository.save(user);
     }

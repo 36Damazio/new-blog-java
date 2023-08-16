@@ -27,7 +27,7 @@ public class Category implements Serializable {
 
     @Column(nullable = false)
     private String name;
-@JsonIgnore
+
     @ManyToMany(mappedBy = "categories")
     private List<Post> posts = new ArrayList<>();
 }

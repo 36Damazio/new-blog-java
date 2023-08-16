@@ -1,6 +1,7 @@
 
 package com.damazio.blog.controllers;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.damazio.blog.models.Post;
 import com.damazio.blog.dtos.PostRequest;
 import com.damazio.blog.services.PostService;
@@ -54,7 +55,19 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
-        return ResponseEntity.noContent().build();
+        try {
+            postService.deletePost(id);
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+            return ResponseEntity.noContent().location(location).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
+    @DeleteMapping("/{postId}/categories/{categoryId}")
+    public ResponseEntity<String> removeCategoryFromPost(@PathVariable Long postId,
+        @PathVariable Long categoryId) {
+        postService.removeCategoryFromPost(postId, categoryId);
+        return ResponseEntity.ok("Category removed from post.");
+    }
+
 }

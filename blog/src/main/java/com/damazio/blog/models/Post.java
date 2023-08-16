@@ -40,7 +40,7 @@ public class Post implements Serializable {
     @ManyToOne
     @JsonIgnore
     private User user;
-
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "post_category",
